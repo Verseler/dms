@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,14 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::get('/documents/owned', [DocumentController::class, 'owned'])->name('document.owned');
+    Route::get('/documents/shared', [DocumentController::class, 'shared'])->name('document.shared');
+    Route::get('/documents/trash', [DocumentController::class, 'trash'])->name('document.trash');
+    Route::post('/documents', [DocumentController::class, 'store'])->name('document.store');
+    Route::delete("/documents/{id}", [DocumentController::class,"destroy"])->name("document.destroy");
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,4 +30,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
