@@ -1,4 +1,5 @@
 import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
 import '../css/app.css';
 import './bootstrap';
 
