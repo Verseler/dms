@@ -12,12 +12,12 @@ defineProps({
     <!-- Primary Navigation Menu -->
     <div
         :class="{ hidden: !show, flex: show }"
-        class="fixed min-h-screen w-60 flex-col justify-between border-e shadow-sm sm:w-80"
+        class="fixed flex-col justify-between min-h-screen shadow-sm w-60 border-e sm:w-80"
     >
         <nav class="p-4">
             <!-- Logo -->
             <Link :href="route('dashboard')">
-                <ApplicationLogo class="mx-auto mb-8 mt-4 h-12" />
+                <ApplicationLogo class="h-12 mx-auto mt-4 mb-8" />
             </Link>
 
             <v-divider></v-divider>
@@ -61,9 +61,9 @@ defineProps({
                 :href="route('profile.edit')"
                 class="flex w-full cursor-pointer items-center gap-x-2.5 text-start transition-transform active:scale-95"
             >
-                <v-avatar
-                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIEd2zxEc_4IQ1jHyniHLECu15zRjkHTBJzA&s"
-                ></v-avatar>
+                <v-avatar color="primary">
+                    {{ $page.props.auth.user.name[0].toUpperCase() }}
+                </v-avatar>
                 <!-- user name and role -->
                 <div>
                     <p class="leading-5 text-neutral-900">
@@ -82,7 +82,7 @@ defineProps({
             >
                 <v-icon
                     icon="mdi-logout"
-                    class="px-4 opacity-70 transition-all hover:opacity-100 active:text-red-500"
+                    class="px-4 transition-all opacity-70 hover:opacity-100 active:text-red-500"
                 />
             </Link>
         </div>
