@@ -73,6 +73,22 @@ const handleUpdateOptions = (newOptions) => {
             >
                 <!-- Action Buttons -->
                 <template v-slot:item.action="{ item }">
+                    <a
+                        download
+                        :href="
+                            route('document.download', {
+                                file: item.file_path,
+                                title: item.title,
+                            })
+                        "
+                    >
+                        <v-btn
+                            icon="mdi-file-download"
+                            size="small"
+                            variant="text"
+                        />
+                    </a>
+
                     <Link
                         :href="route('document.destroy', { id: item.id })"
                         method="delete"
@@ -84,8 +100,8 @@ const handleUpdateOptions = (newOptions) => {
                             size="small"
                             variant="text"
                             color="#ef4444"
-                        ></v-btn
-                    ></Link>
+                        />
+                    </Link>
                 </template>
             </v-data-table-server>
         </div>

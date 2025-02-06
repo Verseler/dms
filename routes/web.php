@@ -21,7 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/documents/shared', [DocumentController::class, 'shared'])->name('document.shared');
     Route::get('/documents/trash', [DocumentController::class, 'trash'])->name('document.trash');
     Route::post('/documents', [DocumentController::class, 'store'])->name('document.store');
-    Route::delete("/documents/{id}", [DocumentController::class,"destroy"])->name("document.destroy");
+    Route::delete('/documents/{id}', [DocumentController::class, 'destroy'])->name('document.destroy');
+    Route::get('/document/{file}/{title}', [DocumentController::class, 'download'])->name('document.download');
 });
 
 Route::middleware('auth')->group(function () {
