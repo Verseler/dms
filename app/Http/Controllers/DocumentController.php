@@ -13,7 +13,7 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $fields = $request->validate([
             'files.*' => ['required', 'file']
         ]);
 
@@ -51,10 +51,34 @@ class DocumentController extends Controller
 
     public function trash()
     {
-        return Inertia::render('TrashDocuments');
+        $user_trash_documents = Document::withTrashed()
+            ->where('user_id', Auth::id())
+            ->with('user')
+            ->whereNotNull('deleted_at')
+            ->paginate(10);
+
+        return Inertia::render('TrashDocuments', ['trash_documents' => $user_trash_documents]);
     }
 
-    public function destroy($id)
+    public function permanentDestroy($id)
+    {
+
+        $document = Document::withTrashed()
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        //check if document exist
+        if (!$document) {
+            return back()->with('error', 'Unable to delete document: Document not found.');
+        }
+
+        $document->forceDelete();
+
+        return back()->with('success', 'Document permanently deleted successfully.');
+    }
+
+    public function softDestroy($id)
     {
         $document = Document::where('id', $id)->where('user_id', Auth::id())->first();
 
@@ -66,5 +90,18 @@ class DocumentController extends Controller
         $document->delete();
 
         return back()->with('success', 'Document deleted successfully.');
+    }
+
+    public function restore($id)
+    {
+        $document = Document::withTrashed()->where('id', $id)->where('user_id', Auth::id())->first();
+
+        if (!$document) {
+            return back()->with('error', 'Unable to delete document: Document not found.');
+        }
+
+        $document->restore();
+
+        return back();
     }
 }
