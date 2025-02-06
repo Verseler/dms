@@ -17,7 +17,7 @@ defineProps({
         <nav class="p-4">
             <!-- Logo -->
             <Link :href="route('dashboard')">
-                <ApplicationLogo class="h-12 mx-auto mt-4 mb-8" />
+                <ApplicationLogo class="h-12 mx-auto mb-4" />
             </Link>
 
             <v-divider></v-divider>
