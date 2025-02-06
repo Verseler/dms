@@ -68,14 +68,12 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 block">
+            <div class="mt-4 flex justify-between">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
                     <span class="ms-2 text-sm text-gray-600">Remember me</span>
                 </label>
-            </div>
 
-            <div class="mt-4 flex items-center justify-end">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
@@ -83,18 +81,25 @@ const submit = () => {
                 >
                     Forgot your password?
                 </Link>
-
-                <v-btn
-                    color="primary"
-                    variant="flat"
-                    type="submit"
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log In
-                </v-btn>
             </div>
+
+            <v-btn
+                color="primary"
+                variant="flat"
+                type="submit"
+                class="mt-5 w-full"
+                :class="{ 'opacity-25': form.processing }"
+                :disabled="form.processing"
+            >
+                Log In
+            </v-btn>
+
+            <Link
+                :href="route('register')"
+                class="mt-2 block rounded-md text-center text-sm text-gray-600 underline hover:text-gray-900"
+            >
+                Don't have an account yet?
+            </Link>
         </form>
     </GuestLayout>
 </template>
