@@ -61,7 +61,6 @@ const handleUpdateOptions = (newOptions) => {
                 </h2>
             </div>
         </template>
-
         <div class="p-4">
             <v-data-table-server
                 :items-per-page="documents.per_page"
@@ -71,6 +70,28 @@ const handleUpdateOptions = (newOptions) => {
                 @update:options="handleUpdateOptions"
                 class="min-h-96 shadow"
             >
+                <!-- File Preview -->
+                <template v-slot:item.file_path="{ item }">
+                    <!-- show image preview if file is an image or else show file path  -->
+                    <img
+                        v-if="/image/i.test(item.file_type)"
+                        class="aspect-square h-full p-1"
+                        :src="`/${item.file_path}`"
+                    />
+                    <img
+                        v-else-if="/pdf/i.test(item.file_type)"
+                        class="aspect-square h-full p-1"
+                        src="https://res-academy.cache.wpscdn.com/images/seo_posts/20230705/8588d8f345b737b64a61e53b2a9c8128.png"
+                    />
+                    <img
+                        v-else-if="/html/i.test(item.file_type)"
+                        class="aspect-square h-full p-1"
+                        src="https://cdn4.iconfinder.com/data/icons/file-extension-names-vol-5-1/512/38-512.png"
+                    />
+
+                    <div v-else>{{ item.file_path }}</div>
+                </template>
+
                 <!-- Action Buttons -->
                 <template v-slot:item.action="{ item }">
                     <a :download="item.title" :href="item.file_type">
