@@ -61,6 +61,7 @@ const handleUpdateOptions = (newOptions) => {
                 </h2>
             </div>
         </template>
+
         <div class="p-4">
             <v-data-table-server
                 :items-per-page="documents.per_page"
@@ -102,8 +103,17 @@ const handleUpdateOptions = (newOptions) => {
                         />
                     </a>
 
+                    <a :href="`/${item.file_path}`" target="_blank">
+                        <v-btn
+                            icon="mdi-open-in-new"
+                            size="small"
+                            variant="text"
+                            color="primary"
+                        />
+                    </a>
+
                     <Link
-                        :href="route('document.destroy', { id: item.id })"
+                        :href="route('document.softDestroy', { id: item.id })"
                         method="delete"
                         as="button"
                         type="button"
