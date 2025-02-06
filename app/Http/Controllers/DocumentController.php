@@ -67,13 +67,4 @@ class DocumentController extends Controller
 
         return back()->with('success', 'Document deleted successfully.');
     }
-
-    public function download($file, $title)
-    {
-        if (!Storage::exists($file)) {
-            return response()->json(['error' => 'File not found'], 404);
-        }
-
-        return Storage::download($file, $title);
-    }
 }
