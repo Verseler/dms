@@ -1,10 +1,14 @@
 <script setup>
+import DocumentShareBtn from '@/Components/DocumentShareBtn.vue';
+import FilePreview from '@/Components/FilePreview.vue';
+import RecipientList from '@/Components/RecipientList.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps({
     documents: Object,
+    userEmails: Array,
 });
 
 const headers = [
@@ -12,6 +16,7 @@ const headers = [
     { title: 'File', key: 'file_path' },
     { title: 'Type', key: 'file_type' },
     { title: 'Owner Name', key: 'user.name' },
+    { title: 'Recipients', key: 'shared_users' },
     { title: 'Action', key: 'action' },
 ];
 
@@ -69,33 +74,22 @@ const handleUpdateOptions = (newOptions) => {
                 :items="documents.data"
                 :items-length="documents.total"
                 @update:options="handleUpdateOptions"
-                class="min-h-96 shadow"
+                class="shadow min-h-96"
             >
-                <!-- File Preview -->
                 <template v-slot:item.file_path="{ item }">
-                    <!-- show image preview if file is an image or else show file path  -->
-                    <img
-                        v-if="/image/i.test(item.file_type)"
-                        class="aspect-square h-full p-1"
-                        :src="`/${item.file_path}`"
+                    <FilePreview
+                        :file-type="item.file_type"
+                        :file-path="item.file_path"
                     />
-                    <img
-                        v-else-if="/pdf/i.test(item.file_type)"
-                        class="aspect-square h-full p-1"
-                        src="https://res-academy.cache.wpscdn.com/images/seo_posts/20230705/8588d8f345b737b64a61e53b2a9c8128.png"
-                    />
-                    <img
-                        v-else-if="/html/i.test(item.file_type)"
-                        class="aspect-square h-full p-1"
-                        src="https://cdn4.iconfinder.com/data/icons/file-extension-names-vol-5-1/512/38-512.png"
-                    />
+                </template>
 
-                    <div v-else>{{ item.file_path }}</div>
+                <template v-slot:item.shared_users="{ item }">
+                    <RecipientList :recipients="item.shared_users" />
                 </template>
 
                 <!-- Action Buttons -->
                 <template v-slot:item.action="{ item }">
-                    <a :download="item.title" :href="item.file_type">
+                    <a :download="item.title" :href="item.file_path">
                         <v-btn
                             icon="mdi-file-download"
                             size="small"
@@ -111,6 +105,11 @@ const handleUpdateOptions = (newOptions) => {
                             color="primary"
                         />
                     </a>
+
+                    <DocumentShareBtn
+                        :documentId="item.id"
+                        :userEmails="userEmails"
+                    />
 
                     <Link
                         :href="route('document.softDestroy', { id: item.id })"

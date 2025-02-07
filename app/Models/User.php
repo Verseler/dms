@@ -48,6 +48,12 @@ class User extends Authenticatable
 
     public function documents()
     {
-        $this->hasMany(Document::class);
+        return $this->hasMany(Document::class);
+    }
+
+    public function sharedDocuments()
+    {
+        return $this->belongsToMany(Document::class, 'document_shares', 'recipient_id', 'document_id')
+            ->withTimestamps();
     }
 }

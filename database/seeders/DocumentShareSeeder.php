@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Document;
+use App\Models\DocumentShare;
 use Illuminate\Database\Seeder;
 
-class DocumentSeeder extends Seeder
+class DocumentShareSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Document::factory()->count(25)->create();
+        DocumentShare::factory()->count(1)->create();
     }
 }

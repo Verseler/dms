@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecipientController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/documents/{id}', [DocumentController::class, 'softDestroy'])->name('document.softDestroy');
     Route::delete('/documents/{id}/permanent', [DocumentController::class, 'permanentDestroy'])->name('document.permanentDestroy');
     Route::get('/documents/{id}', [DocumentController::class, 'restore'])->name('document.restore');
+    Route::post('/documents/share', [DocumentController::class, 'share'])->name('document.share');
+    Route::get('/recipients/search/{search}', [RecipientController::class, 'search'])->name('recipient.search');
 });
 
 Route::middleware('auth')->group(function () {
